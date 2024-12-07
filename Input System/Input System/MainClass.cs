@@ -18,7 +18,7 @@ namespace Input_System
         public string lastName;
         public string collegeName;
         public string courseName;
-        public string id;
+        public string studentID;
 
         public Student(string firstName, string middleName, string lastName, string collegeName, string courseName, string id)
         {
@@ -27,7 +27,7 @@ namespace Input_System
             this.lastName = lastName;
             this.collegeName = collegeName;
             this.courseName = courseName;
-            this.id = id;
+            this.studentID = id;
         }
     }
 }

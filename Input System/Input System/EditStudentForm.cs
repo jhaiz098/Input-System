@@ -1,15 +1,25 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Input_System
 {
-    public partial class AddStudentForm : Form
+    public partial class EditStudentForm : Form
     {
+        Student student;
         Form1 mainForm;
-        public AddStudentForm(Form1 parentForm)
+        public EditStudentForm(Student student, Form1 mainForm)
         {
             InitializeComponent();
-            mainForm = parentForm;
+            this.student = student;
+            this.mainForm = mainForm;
+
+            textBox1.Text = student.firstName;
+            textBox2.Text = student.middleName;
+            textBox3.Text = student.lastName;
+            comboBox1.SelectedItem = student.collegeName;
+            comboBox2.SelectedItem = student.courseName;
+            textBox4.Text = student.studentID;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -19,23 +29,25 @@ namespace Input_System
 
         private void button2_Click(object sender, EventArgs e)
         {
+            // Find the student in the list
+            Student studentToUpdate = MainClass.students.FirstOrDefault(s =>
+                s.firstName == student.firstName &&
+                s.middleName == student.middleName &&
+                s.lastName == student.lastName &&
+                s.collegeName == student.collegeName &&
+                s.courseName == student.courseName &&
+                s.studentID == student.studentID);
 
-            if (ValidateAddStudentInputs()) // if all inputs are valid
-            {
-                string firstName = textBox1.Text;
-                string middleName = textBox2.Text;
-                string lastName = textBox3.Text;
-                string college = Convert.ToString(comboBox1.SelectedItem);
-                string course = Convert.ToString(comboBox2.SelectedItem);
-                string id = textBox4.Text;
+            studentToUpdate.firstName = textBox1.Text;
+            studentToUpdate.middleName = textBox2.Text;
+            studentToUpdate.lastName = textBox3.Text;
+            studentToUpdate.collegeName = Convert.ToString(comboBox1.SelectedItem);
+            studentToUpdate.courseName = Convert.ToString(comboBox2.SelectedItem);
+            studentToUpdate.studentID = textBox4.Text;
 
-                MainClass.students.Add(new Student(firstName, middleName, lastName, college, course, id));
+            mainForm.UpdateStudentsInfo(MainClass.students);
 
-                mainForm.UpdateStudentsInfo(MainClass.students);
-
-                this.Close();
-            }
-
+            this.Close();
         }
 
         private void comboBox1_TextChanged(object sender, EventArgs e)
@@ -110,7 +122,7 @@ namespace Input_System
                     break;
             }
         }
-    
+
         private bool ValidateAddStudentInputs()
         {
             bool isValid = true;
