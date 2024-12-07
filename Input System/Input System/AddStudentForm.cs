@@ -13,7 +13,7 @@ namespace Input_System
 {
     public partial class AddStudentForm : Form
     {
-        public AddStudentForm()
+        public AddStudentForm(Form1 parentForm)
         {
             InitializeComponent();
         }

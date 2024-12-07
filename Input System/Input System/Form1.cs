@@ -19,7 +19,7 @@ namespace Input_System
 
         private void button3_Click(object sender, EventArgs e)
         {
-            AddStudentForm addStudentForm = new AddStudentForm();
+            AddStudentForm addStudentForm = new AddStudentForm(this);
             addStudentForm.Show();
         }
 
