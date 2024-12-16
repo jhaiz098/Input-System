@@ -6,30 +6,36 @@ namespace Input_System
 {
     public partial class EditStudentForm : Form
     {
+        // Declare a student object and a reference to the main form
         Student student;
         Form1 mainForm;
+
+        // Constructor that initializes the form with data from the student and main form
         public EditStudentForm(Student student, Form1 mainForm)
         {
-            InitializeComponent();
-            this.student = student;
-            this.mainForm = mainForm;
+            InitializeComponent();  // Initialize the form components
+            this.student = student;  // Store the student object
+            this.mainForm = mainForm;  // Store the reference to the main form
 
-            textBox1.Text = student.firstName;
-            textBox2.Text = student.middleName;
-            textBox3.Text = student.lastName;
-            comboBox1.SelectedItem = student.collegeName;
-            comboBox2.SelectedItem = student.courseName;
-            textBox4.Text = student.studentID;
+            // Set the form fields to the student's existing data
+            textBox1.Text = student.firstName;  // First name
+            textBox2.Text = student.middleName; // Middle name
+            textBox3.Text = student.lastName;   // Last name
+            comboBox1.SelectedItem = student.collegeName;  // Set the selected college
+            comboBox2.SelectedItem = student.courseName;   // Set the selected course
+            textBox4.Text = student.studentID;  // Student ID
         }
 
+        // Close the form when button1 is clicked
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Close();  // Close the form
         }
 
+        // Handle updating the student details when button2 is clicked
         private void button2_Click(object sender, EventArgs e)
         {
-            // Find the student in the list
+            // Find the student in the list based on their original details
             Student studentToUpdate = MainClass.students.FirstOrDefault(s =>
                 s.firstName == student.firstName &&
                 s.middleName == student.middleName &&
@@ -38,6 +44,7 @@ namespace Input_System
                 s.courseName == student.courseName &&
                 s.studentID == student.studentID);
 
+            // Update the found student's details with the new values from the form
             studentToUpdate.firstName = textBox1.Text;
             studentToUpdate.middleName = textBox2.Text;
             studentToUpdate.lastName = textBox3.Text;
@@ -45,19 +52,24 @@ namespace Input_System
             studentToUpdate.courseName = Convert.ToString(comboBox2.SelectedItem);
             studentToUpdate.studentID = textBox4.Text;
 
+            // Update the main form with the new student list
             mainForm.UpdateStudentsInfo(MainClass.students);
 
+            // Close the form after updating
             this.Close();
         }
 
+        // Handle the event when the college selection changes in comboBox1
         private void comboBox1_TextChanged(object sender, EventArgs e)
         {
+            // Clear and reset the course comboBox based on the selected college
             comboBox2.Items.Clear();
             comboBox2.Text = string.Empty;
 
+            // Enable or disable the course comboBox depending on the college chosen
             switch (comboBox1.SelectedIndex)
             {
-                case -1: // no selected items
+                case -1: // No college selected
                     comboBox2.Enabled = false;
                     break;
                 case 0: // College of Architecture and Allied Discipline
@@ -123,47 +135,54 @@ namespace Input_System
             }
         }
 
+        // Method to validate the inputs when adding or updating a student
         private bool ValidateAddStudentInputs()
         {
-            bool isValid = true;
+            bool isValid = true;  // Assume inputs are valid initially
 
+            // Check if the first name is empty or whitespace
             if (string.IsNullOrWhiteSpace(textBox1.Text))
             {
                 MessageBox.Show("Please enter the student's first name", "Error");
                 isValid = false;
             }
 
+            // Check if the middle name is empty or whitespace
             if (string.IsNullOrWhiteSpace(textBox2.Text))
             {
                 MessageBox.Show("Please enter the student's middle name", "Error");
                 isValid = false;
             }
 
+            // Check if the last name is empty or whitespace
             if (string.IsNullOrWhiteSpace(textBox3.Text))
             {
                 MessageBox.Show("Please enter the student's last name", "Error");
                 isValid = false;
             }
 
+            // Check if a college has been selected
             if (comboBox1.SelectedIndex == -1)
             {
                 MessageBox.Show("Please choose the student's college", "Error");
                 isValid = false;
             }
 
+            // Check if a course has been selected
             if (comboBox2.SelectedIndex == -1)
             {
                 MessageBox.Show("Please choose the student's course", "Error");
                 isValid = false;
             }
 
+            // Check if the student ID is empty or whitespace
             if (string.IsNullOrWhiteSpace(textBox4.Text))
             {
                 MessageBox.Show("Please enter the student's student ID", "Error");
                 isValid = false;
             }
 
-            return isValid;
+            return isValid;  // Return whether the inputs are valid
         }
     }
 }
